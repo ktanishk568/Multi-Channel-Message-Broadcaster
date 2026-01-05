@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CheerioAI – Broadcasting Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    const loggedIn = localStorage.getItem("loggedIn");
+    const role = localStorage.getItem("role");
+    if (loggedIn !== "true" || role !== "admin") {
+      window.location.href = "index.html";
+    }
+  </script>
+</head>
+<body class="dashboard-body">
+
+  <aside class="sidebar">
+    <div class="logo">Cheerio <span>AI</span></div>
+
+    <nav class="menu">
+      <a class="active">Dashboard</a>
+      <a>Campaigns</a>
+      <a>Contacts</a>
+      <a>Analytics</a>
+      <a>Templates</a>
+      <a>API &amp; Integration</a>
+    </nav>
+
+    <div class="quick-actions">
+      <h4>Quick Actions</h4>
+      <button class="primary-btn">New Campaign</button>
+      <button class="secondary-btn">Schedule Message</button>
+    </div>
+  </aside>
+
+
+  <main class="main" id="dashboardRoot">
+   
+    <header class="topbar">
+      <div>
+        <div class="top-title">Dashboard Overview</div>
+        <div class="top-subtitle">
+          Monitor your multi-channel broadcasting performance
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <button
+          id="themeToggle"
+          class="icon-btn"
+          title="Toggle light / dark mode"
+        >
+          🌙
+        </button>
+        <span class="icon">🔔</span>
+        <span class="icon">⚙️</span>
+
+        <button id="logoutBtn" class="secondary-btn small">Logout</button>
+
+        <div class="profile">
+          <div class="avatar">A</div>
+          <div>
+            <strong>Admin User</strong><br />
+            <small>admin@cheerio.tech</small>
+          </div>
+        </div>
+      </div>
+    </header>
+    <section class="stats-grid">
+      <article class="card stat-card">
+        <div class="stat-icon">📨</div>
+        <div class="stat-label">Messages Sent</div>
+        <div class="stat-value">1,245,890</div>
+        <div class="stat-change positive">+12.5%</div>
+      </article>
+
+      <article class="card stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-label">Active Contacts</div>
+        <div class="stat-value">48,592</div>
+        <div class="stat-change positive">+8.2%</div>
+      </article>
+
+      <article class="card stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-label">Delivery Rate</div>
+        <div class="stat-value">98.5%</div>
+        <div class="stat-change positive">+2.1%</div>
+      </article>
+
+      <article class="card stat-card">
+        <div class="stat-icon">⏱️</div>
+        <div class="stat-label">Pending Campaigns</div>
+        <div class="stat-value">24</div>
+        <div class="stat-change negative">-5</div>
+      </article>
+    </section>
+    <section class="grid-2">
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2>Campaign Performance</h2>
+            <p>Last 6 months trend analysis</p>
+          </div>
+          <a href="#" class="link">View Details</a>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="performanceChart"></canvas>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2>Channel Distribution</h2>
+            <p>Usage by platform</p>
+          </div>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="channelChart"></canvas>
+        </div>
+
+        <ul class="channel-legend">
+          <li><span class="dot email"></span>Email <span class="percent">45%</span></li>
+          <li><span class="dot sms"></span>SMS <span class="percent">25%</span></li>
+          <li><span class="dot wa"></span>WhatsApp <span class="percent">20%</span></li>
+          <li><span class="dot push"></span>Push <span class="percent">7%</span></li>
+          <li><span class="dot social"></span>Social <span class="percent">3%</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="grid-2">
+      <article class="card">
+        <h2>Send a New Message</h2>
+        <p>Broadcast across multiple channels</p>
+
+        <textarea
+          id="messageInput"
+          maxlength="200"
+          placeholder="Type your message..."
+        ></textarea>
+        <div class="counter"><span id="charCount">0</span>/200</div>
+
+        <h3>Select Channels</h3>
+        <div class="channels">
+          <label><input type="checkbox" value="Email" /> Email</label>
+          <label><input type="checkbox" value="SMS" /> SMS</label>
+          <label><input type="checkbox" value="WhatsApp" /> WhatsApp</label>
+        </div>
+
+        <button id="sendBtn" class="primary-btn wide">Send Message</button>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2>Recent Campaigns</h2>
+            <p>Your latest broadcasting activities</p>
+          </div>
+          <button class="primary-btn small">New Campaign</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="campaign-table">
+            <thead>
+              <tr>
+                <th>Campaign Name</th>
+                <th>Channel</th>
+                <th>Messages Sent</th>
+                <th>Delivered</th>
+                <th>Status</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Summer Sale Promotion</td>
+                <td>Multi-Channel</td>
+                <td>45,230</td>
+                <td>44,890<br /><span class="sub">99.2% rate</span></td>
+                <td><span class="badge success">completed</span></td>
+                <td>2 hours ago</td>
+              </tr>
+              <tr>
+                <td>Product Launch Alert</td>
+                <td>Email + SMS</td>
+                <td>12,450</td>
+                <td>12,200<br /><span class="sub">98.0% rate</span></td>
+                <td><span class="badge success">completed</span></td>
+                <td>5 hours ago</td>
+              </tr>
+              <tr>
+                <td>Weekly Newsletter</td>
+                <td>Email</td>
+                <td>89,450</td>
+                <td>88,120<br /><span class="sub">98.5% rate</span></td>
+                <td><span class="badge info">in-progress</span></td>
+                <td>1 day ago</td>
+              </tr>
+              <tr>
+                <td>Flash Sale Reminder</td>
+                <td>WhatsApp</td>
+                <td>23,400</td>
+                <td>23,100<br /><span class="sub">98.7% rate</span></td>
+                <td><span class="badge success">completed</span></td>
+                <td>2 days ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Message Logs</h2>
+      <div id="logContainer" class="log-container"></div>
+    </section>
+  </main>
+  
+  <div id="logoutModal" class="modal">
+    <div class="modal-content">
+      <h3>Logout</h3>
+      <p>Are you sure you want to logout?</p>
+      <div class="modal-buttons">
+        <button id="logoutConfirm" class="primary-btn">Logout</button>
+        <button id="logoutCancel" class="secondary-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
