@@ -239,8 +239,7 @@ background: linear-gradient(135deg, var(--accent), var(--accent-2));
   gap: 10px;
 }
 
-.icon-btn,
-.icon {
+.icon-btn{
   border: none;
   background: transparent;
   cursor: pointer;

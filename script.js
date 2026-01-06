@@ -9,7 +9,7 @@ function redirectWithAnimation(url) {
 // ---------- LOGIN PAGE ----------
 function initLoginPage() {
   const loginForm = document.getElementById("loginForm");
-  if (!loginForm) return; // we're not on login page
+  if (!loginForm) return; 
 
   const emailInput = document.getElementById("loginEmail");
   const passwordInput = document.getElementById("loginPassword");
@@ -35,7 +35,7 @@ function initLoginPage() {
 // ---------- DASHBOARD PAGE ----------
 function initDashboardPage() {
   const main = document.querySelector(".main");
-  if (!main) return; // not on dashboard
+  if (!main) return; 
 
   // --- dark mode toggle ---
   const themeToggle = document.getElementById("themeToggle");
@@ -279,7 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeModals = () => {
     document.querySelectorAll(".modal").forEach(m => {
       m.style.display = "none";
-    });
+  });
   };
 
   // BUTTON CLICKS
