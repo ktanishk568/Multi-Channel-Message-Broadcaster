@@ -9,7 +9,7 @@ function redirectWithAnimation(url) {
 // ---------- LOGIN PAGE ----------
 function initLoginPage() {
   const loginForm = document.getElementById("loginForm");
-  if (!loginForm) return;
+  if (!loginForm) return; // we're not on login page
 
   const emailInput = document.getElementById("loginEmail");
   const passwordInput = document.getElementById("loginPassword");
@@ -27,7 +27,7 @@ function initLoginPage() {
       localStorage.setItem("lastActivity", Date.now().toString());
       redirectWithAnimation("dashboard.html");
     } else {
-      errorBox.textContent = "Invalid credentials.";
+      errorBox.textContent = "Invalid credentials. Use the demo details below.";
     }
   });
 }
@@ -35,7 +35,7 @@ function initLoginPage() {
 // ---------- DASHBOARD PAGE ----------
 function initDashboardPage() {
   const main = document.querySelector(".main");
-  if (!main) return;
+  if (!main) return; // not on dashboard
 
   // --- dark mode toggle ---
   const themeToggle = document.getElementById("themeToggle");
@@ -223,7 +223,8 @@ function initDashboardPage() {
       }
 
       channels.forEach((channel) => {
-        
+        const sendingText = `Sending to ${channel}...`;
+        addLogEntry(sendingText);
 
         setTimeout(() => {
           addLogEntry(`✅ Message sent successfully to ${channel}!`);
@@ -238,6 +239,32 @@ function initDashboardPage() {
     });
   }
 }
+document.addEventListener("DOMContentLoaded", () => {
+
+  const menuLinks = document.querySelectorAll(".menu a");
+  const sections = document.querySelectorAll(".section");
+
+  menuLinks.forEach(link => {
+    link.addEventListener("click", () => {
+
+      // remove active state
+      menuLinks.forEach(l => l.classList.remove("active"));
+      sections.forEach(s => s.classList.remove("active"));
+
+      // activate clicked item
+      link.classList.add("active");
+
+      const target = link.dataset.section;
+      const section = document.getElementById(`section-${target}`);
+
+      if (section) {
+        section.classList.add("active");
+      }
+    });
+  });
+
+});
+
 
 // ---------- INIT ----------
 initLoginPage();

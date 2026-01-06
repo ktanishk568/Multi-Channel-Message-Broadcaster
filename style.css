@@ -136,8 +136,8 @@ body {
 }
 
 .secondary-btn {
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #ffffff;
+  background: var(--card);
+  color: var(--accent);
   border: 1px solid var(--accent-soft);
 }
 
@@ -146,7 +146,14 @@ body {
   margin-top: 10px;
 }
 
-/* DASHBOARD LAYOUT */
+/* ----------------- DASHBOARD LAYOUT ----------------- */
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
 .dashboard-body {
   display: flex;
   min-height: 100vh;
@@ -189,11 +196,7 @@ body {
 
 .quick-actions {
   margin-top: 26px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 }
-
 .quick-actions h4 {
   font-size: 13px;
   text-transform: uppercase;

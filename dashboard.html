@@ -3,32 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CheerioAI - Broadcasting Dashboard</title>
+  <title>CheerioAI – Broadcasting Dashboard</title>
   <link rel="stylesheet" href="style.css" />
-  
+  <!-- Chart.js CDN MUST be before script.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <!-- Role-based access: admin only -->
   <script>
-    const loggedIn = localStorage.getItem("loggedIn");
     const role = localStorage.getItem("role");
-    if (loggedIn !== "true" || role !== "admin") {
-      window.location.href = "index.html";
+    const loggedIn = localStorage.getItem("loggedIn");
+    if (!loggedIn || role !== "admin") {
+      window.location.href = "login.html";
     }
   </script>
 </head>
 <body class="dashboard-body">
-
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="logo">Cheerio <span>AI</span></div>
-
-    <nav class="menu">
-      <a class="active">Dashboard</a>
-      <a>Campaigns</a>
-      <a>Contacts</a>
-      <a>Analytics</a>
-      <a>Templates</a>
-      <a>API &amp; Integration</a>
-    </nav>
+<nav class="menu">
+  <a class="active" data-section="dashboard">Dashboard</a>
+  <a data-section="campaigns">Campaigns</a>
+  <a data-section="contacts">Contacts</a>
+  <a data-section="analytics">Analytics</a>
+  <a data-section="templates">Templates</a>
+  <a data-section="api">API & Integration</a>
+</nav>
 
     <div class="quick-actions">
       <h4>Quick Actions</h4>
@@ -37,9 +37,9 @@
     </div>
   </aside>
 
-
-  <main class="main" id="dashboardRoot">
-   
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <!-- TOPBAR -->
     <header class="topbar">
       <div>
         <div class="top-title">Dashboard Overview</div>
@@ -52,7 +52,7 @@
         <button
           id="themeToggle"
           class="icon-btn"
-          title="Toggle light / dark mode"
+          title="Toggle dark mode"
         >
           🌙
         </button>
@@ -70,6 +70,8 @@
         </div>
       </div>
     </header>
+
+    <!-- STATS CARDS -->
     <section class="stats-grid">
       <article class="card stat-card">
         <div class="stat-icon">📨</div>
@@ -99,8 +101,11 @@
         <div class="stat-change negative">-5</div>
       </article>
     </section>
+
+    <!-- CHARTS -->
     <section class="grid-2">
-      <article class="card">
+      <!-- Line chart -->
+      <article class="card chart-card">
         <div class="card-header">
           <div>
             <h2>Campaign Performance</h2>
@@ -108,18 +113,21 @@
           </div>
           <a href="#" class="link">View Details</a>
         </div>
+
         <div class="chart-wrapper">
           <canvas id="performanceChart"></canvas>
         </div>
       </article>
 
-      <article class="card">
+      <!-- Donut chart -->
+      <article class="card chart-card">
         <div class="card-header">
           <div>
             <h2>Channel Distribution</h2>
             <p>Usage by platform</p>
           </div>
         </div>
+
         <div class="chart-wrapper">
           <canvas id="channelChart"></canvas>
         </div>
@@ -134,7 +142,9 @@
       </article>
     </section>
 
+    <!-- MESSAGE + HISTORY TABLE -->
     <section class="grid-2">
+      <!-- Sender -->
       <article class="card">
         <h2>Send a New Message</h2>
         <p>Broadcast across multiple channels</p>
@@ -144,7 +154,9 @@
           maxlength="200"
           placeholder="Type your message..."
         ></textarea>
-        <div class="counter"><span id="charCount">0</span>/200</div>
+        <div class="counter">
+          <span id="charCount">0</span>/200
+        </div>
 
         <h3>Select Channels</h3>
         <div class="channels">
@@ -156,6 +168,7 @@
         <button id="sendBtn" class="primary-btn wide">Send Message</button>
       </article>
 
+      <!-- Campaign history table -->
       <article class="card">
         <div class="card-header">
           <div>
@@ -177,7 +190,8 @@
                 <th>Time</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="campaignTableBody">
+              <!-- Static sample rows -->
               <tr>
                 <td>Summer Sale Promotion</td>
                 <td>Multi-Channel</td>
@@ -216,16 +230,43 @@
       </article>
     </section>
 
+    <!-- MESSAGE LOGS (history visible) -->
     <section class="card">
       <h2>Message Logs</h2>
       <div id="logContainer" class="log-container"></div>
     </section>
+    <section id="section-dashboard" class="section active">
+  <h2>Dashboard</h2>
+</section>
+
+<section id="section-campaigns" class="section">
+  <h2>Campaigns</h2>
+</section>
+
+<section id="section-contacts" class="section">
+  <h2>Contacts</h2>
+</section>
+
+<section id="section-analytics" class="section">
+  <h2>Analytics</h2>
+</section>
+
+<section id="section-templates" class="section">
+  <h2>Templates</h2>
+</section>
+
+<section id="section-api" class="section">
+  <h2>API & Integration</h2>
+</section>
+
   </main>
-  
+
+  <!-- LOGOUT POPUP MODAL -->
   <div id="logoutModal" class="modal">
     <div class="modal-content">
-      <h3>Logout</h3>
-      <p>Are you sure you want to logout?</p>
+      <h3>Logout?</h3>
+      <p>This will end your admin session.</p>
+
       <div class="modal-buttons">
         <button id="logoutConfirm" class="primary-btn">Logout</button>
         <button id="logoutCancel" class="secondary-btn">Cancel</button>
